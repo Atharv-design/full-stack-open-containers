@@ -1,5 +1,6 @@
-const express = require('express');
+﻿const express = require('express');
 const { Todo } = require('../mongo')
+const redis = require('../redis')
 const router = express.Router();
 
 /* GET todos listing. */
@@ -14,6 +15,12 @@ router.post('/', async (req, res) => {
     text: req.body.text,
     done: false
   })
+
+  // Increment added_todos in Redis
+  const count = await redis.get('added_todos')
+  const newCount = count ? parseInt(count) + 1 : 1
+  await redis.set('added_todos', newCount)
+
   res.send(todo);
 });
 
@@ -48,6 +55,5 @@ singleRouter.put('/', async (req, res) => {
 });
 
 router.use('/:id', findByIdMiddleware, singleRouter)
-
 
 module.exports = router;

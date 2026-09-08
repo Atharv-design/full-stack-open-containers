@@ -14,6 +14,7 @@
     command: npm run dev
     depends_on:
       - mongo
+      - redis
 
   mongo:
     image: mongo
@@ -25,3 +26,13 @@
       MONGO_INITDB_DATABASE: the_database
     volumes:
       - ./mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
