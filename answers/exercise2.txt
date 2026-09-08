@@ -1,0 +1,10 @@
+﻿$ docker run -it ubuntu bash
+root@b8548b9faec3:/# mkdir -p /usr/src/app
+root@b8548b9faec3:/# touch /usr/src/app/index.js
+root@b8548b9faec3:/# ls -la /usr/src/app
+total 8
+drwxr-xr-x 2 root root 4096 Sep  9 02:20 .
+drwxr-xr-x 3 root root 4096 Sep  9 02:20 ..
+-rw-r--r-- 1 root root    0 Sep  9 02:20 index.js
+root@b8548b9faec3:/# exit
+exit
