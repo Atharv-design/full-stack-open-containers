@@ -1,4 +1,4 @@
-﻿name: E2E Tests
+name: E2E Tests
 
 on:
   push:
@@ -32,9 +32,9 @@ jobs:
 
       - name: Wait for services to be ready
         run: |
-          echo "Waiting for nginx to be ready on port 8080..."
-          timeout 120 bash -c 'until curl -f http://localhost:8080 > /dev/null 2>&1; do sleep 2; done'
-          echo "Services are ready!"
+          echo "Waiting for services to be healthy..."
+          timeout 120 bash -c 'until curl -sf http://localhost:8080 > /dev/null 2>&1 && curl -sf http://localhost:8080/api/todos > /dev/null 2>&1; do sleep 2; done'
+          echo "All services (Nginx, Frontend, Backend, MongoDB) are ready!"
           
       - name: Check running containers
         run: docker ps

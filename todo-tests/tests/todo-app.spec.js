@@ -22,14 +22,16 @@ test.describe('Todo App E2E Tests', () => {
     
     await todoInput.fill(testTodoText);
     
-    // Submit the form (look for submit button or press Enter)
-    await page.keyboard.press('Enter');
-    
-    // Wait a moment for the todo to be added
-    await page.waitForTimeout(500);
+    // Submit the form (click submit button or press Enter)
+    const submitBtn = page.getByRole('button', { name: /submit/i });
+    if (await submitBtn.isVisible()) {
+      await submitBtn.click();
+    } else {
+      await page.keyboard.press('Enter');
+    }
     
     // Verify the todo appears in the list
-    await expect(page.getByText(testTodoText)).toBeVisible();
+    await expect(page.getByText(testTodoText)).toBeVisible({ timeout: 10000 });
   });
 
   test('can toggle todo completion status', async ({ page }) => {
@@ -38,20 +40,22 @@ test.describe('Todo App E2E Tests', () => {
     const testTodoText = `Toggle test ${Date.now()}`;
     
     await todoInput.fill(testTodoText);
-    await page.keyboard.press('Enter');
-    await page.waitForTimeout(500);
+    const submitBtn = page.getByRole('button', { name: /submit/i });
+    if (await submitBtn.isVisible()) {
+      await submitBtn.click();
+    } else {
+      await page.keyboard.press('Enter');
+    }
     
-    // Find and click the checkbox or completion button
+    await expect(page.getByText(testTodoText)).toBeVisible({ timeout: 10000 });
+    
+    // Find and click the completion button
     const todoItem = page.locator(`text=${testTodoText}`).locator('..');
-    const checkbox = todoItem.getByRole('checkbox').or(todoItem.getByRole('button', { name: /complete|done|check/i }));
+    const actionBtn = todoItem.getByRole('button', { name: /done|complete/i });
     
-    if (await checkbox.count() > 0) {
-      await checkbox.first().click();
-      await page.waitForTimeout(500);
-      
-      // Verify the todo's state changed (could be strikethrough, different class, etc.)
-      // This is a basic check - actual implementation may vary
-      await expect(todoItem).toBeVisible();
+    if (await actionBtn.count() > 0) {
+      await actionBtn.first().click();
+      await expect(todoItem).toBeVisible({ timeout: 5000 });
     }
   });
 });

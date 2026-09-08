@@ -11,8 +11,9 @@ COPY . .
 # Run tests during build process (Exercise 14)
 RUN npm test
 
-# Set backend URL for Vite build (Exercise 13)
-ENV VITE_BACKEND_URL=http://localhost:3000
+# Set backend URL for Vite build (Exercise 13 & 20)
+ARG VITE_BACKEND_URL=/api
+ENV VITE_BACKEND_URL=${VITE_BACKEND_URL}
 
 RUN npm run build
 
