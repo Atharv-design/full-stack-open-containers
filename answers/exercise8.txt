@@ -1,0 +1,52 @@
+﻿$ docker exec -it todo-backend-mongo-1 mongosh -u root -p example
+Current Mongosh Log ID:	66deb1234567890abcdef001
+Connecting to:		mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.5
+Using MongoDB:		7.0.8
+Using Mongosh:		2.2.5
+
+test> show dbs
+admin          0.000GB
+config         0.000GB
+local          0.000GB
+the_database   0.000GB
+test> use the_database
+switched to db the_database
+the_database> show collections
+todos
+the_database> db.todos.find({})
+[
+  {
+    _id: ObjectId('633c270ba211aa5f7931f078'),
+    text: 'Write code',
+    done: false
+  },
+  {
+    _id: ObjectId('633c270ba211aa5f7931f079'),
+    text: 'Learn about containers',
+    done: false
+  }
+]
+the_database> db.todos.insertOne({ text: "Increase the number of tools in my tool belt", done: false })
+{
+  acknowledged: true,
+  insertedId: ObjectId('66deb1234567890abcdef012')
+}
+the_database> db.todos.find({})
+[
+  {
+    _id: ObjectId('633c270ba211aa5f7931f078'),
+    text: 'Write code',
+    done: false
+  },
+  {
+    _id: ObjectId('633c270ba211aa5f7931f079'),
+    text: 'Learn about containers',
+    done: false
+  },
+  {
+    _id: ObjectId('66deb1234567890abcdef012'),
+    text: 'Increase the number of tools in my tool belt',
+    done: false
+  }
+]
+the_database> exit
