@@ -1,7 +1,9 @@
 ﻿services:
-  app:
+  server:
     image: todo-backend-dev
-    build: .
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
     volumes:
       - ./:/usr/src/app
       - /usr/src/app/node_modules
@@ -11,7 +13,6 @@
       - PORT=3000
       - MONGO_URL=mongodb://root:example@mongo:27017/the_database
       - REDIS_URL=redis://redis:6379
-    command: npm run dev
     depends_on:
       - mongo
       - redis
